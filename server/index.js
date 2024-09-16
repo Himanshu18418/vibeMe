@@ -6,12 +6,14 @@ const authRoutes = require("./routes/auth");
 const songRoutes = require("./routes/song");
 const playlistRoutes = require("./routes/playlist");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const { errorToJSON } = require("next/dist/server/render");
 const JwtStrategy = require("passport-jwt").Strategy;
 ExtractJwt = require("passport-jwt").ExtractJwt;
 
+dotenv.config();
 const cors = require("cors");
-const port = 8080;
+const port = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
@@ -37,12 +39,12 @@ passport.use(
   new JwtStrategy(opts, function (jwt_payload, done) {
     if (jwt_payload.exp < Date.now() / 1000) {
       return done(null, false);
-  }
+    }
 
-  // Check if token is revoked
-  if (blacklist.has(jwt_payload.token)) {
+    // Check if token is revoked
+    if (blacklist.has(jwt_payload.token)) {
       return done(null, false);
-  }
+    }
     User.findOne({ _id: jwt_payload.identifier }, function (err, user) {
       if (err) {
         console.log(err);
