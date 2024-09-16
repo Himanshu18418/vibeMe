@@ -14,6 +14,7 @@ ExtractJwt = require("passport-jwt").ExtractJwt;
 dotenv.config();
 const cors = require("cors");
 const port = process.env.PORT || 8080;
+console.log(`Server will listen on port: ${port}`);
 app.use(cors());
 app.use(express.json());
 
